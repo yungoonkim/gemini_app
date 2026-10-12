@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    
+    <!-- Gemini Studio Brand Colors -->
+    <color name="bg_main">#0B0F19</color>
+    <color name="bg_surface">#131B2E</color>
+    <color name="bg_surface_card">#1E293B</color>
+    
+    <color name="primary_indigo">#6366F1</color>
+    <color name="accent_cyan">#38BDF8</color>
+    <color name="accent_purple">#A855F7</color>
+    
+    <color name="text_primary">#F8FAFC</color>
+    <color name="text_secondary">#94A3B8</color>
+    <color name="border_subtle">#334155</color>
+</resources>

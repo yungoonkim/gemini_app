@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini 3.8 Flash Studio - 프로젝트 작업 히스토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Outfit:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --bg-card: rgba(18, 26, 43, 0.7);
+      --bg-card-hover: rgba(28, 40, 65, 0.85);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(99, 102, 241, 0.4);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --grad-primary: linear-gradient(135deg, #38bdf8 0%, #6366f1 50%, #a855f7 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
+        radial-gradient(circle at 85% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      line-height: 1.6;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--accent-cyan);
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 700px;
+    }
+
+    /* Overview Cards */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .overview-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px 20px;
+      backdrop-filter: blur(12px);
+    }
+
+    .card-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .card-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 10px var(--accent-emerald);
+    }
+
+    /* Timeline Section */
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .timeline {
+      position: relative;
+      margin-left: 14px;
+      padding-left: 28px;
+      border-left: 2px solid rgba(99, 102, 241, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      margin-bottom: 50px;
+    }
+
+    .timeline-item {
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -35px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-cyan);
+      border: 2px solid var(--bg-dark);
+    }
+
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .timeline-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .timeline-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .badge-done {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-in-progress {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+      backdrop-filter: blur(12px);
+    }
+
+    .timeline-card p {
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+
+    .task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .task-list li::before {
+      content: '✔';
+      color: var(--accent-cyan);
+      font-weight: bold;
+      font-size: 0.85rem;
+      margin-top: 2px;
+    }
+
+    .task-list li code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--accent-cyan);
+    }
+
+    /* Architecture Table */
+    .table-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+      overflow-x: auto;
+      margin-bottom: 40px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84rem;
+      color: var(--accent-cyan);
+    }
+
+    /* Future Placeholder Notice */
+    .future-placeholder {
+      border: 2px dashed rgba(99, 102, 241, 0.3);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+      background: rgba(99, 102, 241, 0.03);
+    }
+
+    .future-placeholder p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Top Header -->
+    <header>
+      <div class="header-badge">✨ Gemini 3.8 Flash Studio • Project Changelog</div>
+      <h1>작업 내역 및 프로젝트 히스토리</h1>
+      <p class="subtitle">
+        Google Gemini 3.8 Flash 기반 웹 서비스의 초기 구축부터 현재까지의 상세 변경 내역과 아키텍처 문서입니다. 새로운 작업이 추가될 때마다 지속적으로 기록 및 업데이트됩니다.
+      </p>
+    </header>
+
+    <!-- Key Metrics Overview -->
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="card-label">탑재 모델</div>
+        <div class="card-value">gemini-3.8-flash</div>
+      </div>
+      <div class="overview-card">
+        <div class="card-label">서비스 상태</div>
+        <div class="card-value">
+          <span class="status-dot"></span> 정상 가동 중 (:3000)
+        </div>
+      </div>
+      <div class="overview-card">
+        <div class="card-label">뷰포트 규격</div>
+        <div class="card-value">스마트폰 (9:19.5)</div>
+      </div>
+      <div class="overview-card">
+        <div class="card-label">API 키 연동</div>
+        <div class="card-value">환경변수 (.env)</div>
+      </div>
+    </div>
+
+    <!-- Timeline Work History -->
+    <h2 class="section-title">📌 개발 타임라인 & 작업 내역</h2>
+    <div class="timeline" id="timeline-container">
+
+      <!-- Item 15: webApp Separation & Android Studio 2026.2.1 App Creation -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">15. [구조 분리 & 모바일 확장] webApp 폴더 분리 및 Android Studio 2026.2.1 네이티브 앱(androidApp) 구축</span>
+          <span class="timeline-date">2026-10-12 15:40</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 요청에 따라 기존 웹앱 소스코드를 <code>webApp/</code> 폴더로 완전히 구조 분리하고, <strong>Android Studio 2026.2.1</strong>에서 즉시 빌드 및 실행 가능한 안드로이드 네이티브 앱 프로젝트(<code>androidApp/</code>)와 초보자용 친절 가이드를 제작했습니다.</p>
+          <ul class="task-list">
+            <li><strong>웹앱 독립 구조화:</strong> 루트 폴더의 Node.js/Express, Firebase, 프론트엔드 정적 리소스 전체를 <code>webApp/</code> 폴더로 안전하게 이동 및 로컬 서버 데몬 분리 구동</li>
+            <li><strong>Android Studio 2026.2.1 프로젝트 생성 (<code>androidApp/</code>):</strong> 최신 Gradle 8.9 및 AGP 8.7.0, Kotlin, <code>compileSdk: 35</code>(Android 15), Material 3 기반 프로젝트 구조 완비</li>
+            <li><strong>네이티브 WebView 하이브리드 엔진 탑재:</strong> 엣지-투-엣지 다크 테마(#0B0F19), 멀티모달 갤러리/카메라 사진 업로드(<code>WebChromeClient</code>), 음성 STT 마이크 권한, 스와이프 새로고침, 뒤로가기 내비게이션 완벽 지원</li>
+            <li><strong>오프라인 감지 및 재시도 UX:</strong> 네트워크 단절 시 시각적 안내 카드 표시 및 원클릭 '다시 시도' 버튼 제공</li>
+            <li><strong>초보자 전용 비주얼 HTML 가이드 (<code>android_guide.html</code>):</strong> 안드로이드 스튜디오를 처음 사용하는 사람도 5분 만에 따라 할 수 있도록 Open부터 가상폰(에뮬레이터) 생성, 실제 폰 USB 연결, ▶ 실행, APK 추출까지 친절히 설명한 대화형 가이드 문서 배포</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 14: Google Search Grounding Feature -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">14. [기능 추가] 실시간 구글 웹 검색 (Google Search Grounding) 및 출처 링크 연동</span>
+          <span class="timeline-date">2026-10-12 15:15</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 요청에 따라 실시간 날씨, 최신 뉴스, 최신 사실을 실시간 검색하여 검증된 출처와 함께 제공하는 <strong>Google Search Grounding</strong> 기능을 탑재했습니다.</p>
+          <ul class="task-list">
+            <li><strong>Google GenAI Grounding 도구 연동:</strong> 백엔드 <code>server.js</code>에 <code>tools: [{ googleSearch: {} }]</code> 설정 및 스트리밍 응답 내 <code>groundingMetadata</code> 자동 수집</li>
+            <li><strong>원터치 검색 토글 버튼:</strong> 대화창 툴바에 직관적인 <code>검색 ON / 검색 OFF</code> 원터치 토글 버튼 탑재 및 다크/라이트 테마 전용 스타일 적용</li>
+            <li><strong>환경 설정 모달 스위치 연동:</strong> 설정 모달 내 <code>구글 실시간 웹 검색 (Grounding)</code> 스위치와 툴바 상태 실시간 상호 동기화</li>
+            <li><strong>검증된 출처 링크 & 쿼리 칩 표시:</strong> AI 답변 하단에 실시간 검색 쿼리 태그(<code>🔍 검색어</code>) 및 클릭 시 바로 이동 가능한 출처 카드(<code>🌐 출처 링크</code>) 동적 렌더링</li>
+            <li><strong>Computer-Use E2E 검증 완료:</strong> 가상환경(<code>myenv</code>)과 Playwright를 통해 마우스/키보드 시각적 조작 및 실제 문정동 날씨 질의 테스트(7개 출처 연동 확인) 100% 통과</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 13: Google Cloud Run Production Deployment -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">13. [클라우드 배포] Google Cloud Run 실시간 서버리스 배포 완료 (iceu-songpa11 / 서울 리전)</span>
+          <span class="timeline-date">2026-10-12 14:57</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 요청에 따라 GCP 프로젝트 <strong><code>iceu-songpa11</code></strong>(계정: <code>songpa11@iceu.kr</code>)에 Gemini 3.8 Flash Studio 전체 컨테이너를 Google Cloud Run 프로덕션 환경으로 배포 완료했습니다.</p>
+          <ul class="task-list">
+            <li><strong>라이브 서비스 URL:</strong> <a href="https://gemini-studio-976675812314.asia-northeast3.run.app" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">https://gemini-studio-976675812314.asia-northeast3.run.app</a></li>
+            <li><strong>배포 리전:</strong> <code>asia-northeast3</code> (대한민국 서울 - 최단 지연시간 보장)</li>
+            <li><strong>컨테이너라이징:</strong> 경량화된 Node.js 20 LTS 슬림 베이스 <code>Dockerfile</code> 구축 및 Cloud Build 자동 빌드 파이프라인 수행</li>
+            <li><strong>안전한 환경변수 연동:</strong> <code>GEMINI_API_KEY</code>, <code>FIREBASE_PROJECT_ID</code>, <code>FIREBASE_API_KEY</code> 등 프로덕션 환경변수 인스턴스 주입 완료</li>
+            <li><strong>공용 글로벌 HTTPS & PWA 자동 연동:</strong> Google 관리형 SSL/TLS가 기본 적용되어 전 세계 어디서나 스마트폰 카메라로 QR 스캔 시 즉시 정식 PWA로 설치 가능</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 12: PWA Smartphone App Installation & Dynamic QR Code -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">12. [기능 추가] PWA(프로그레시브 웹 앱) 스마트폰 앱 설치 및 실시간 QR 코드 연동 지원</span>
+          <span class="timeline-date">2026-10-12 14:52</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>스마트폰에서 주소창 없이 전체화면 네이티브 앱처럼 실행할 수 있는 PWA(Progressive Web App) 규격을 구축하고, 모바일 카메라로 스캔하여 즉시 접속 및 설치할 수 있는 전용 QR 코드 시스템을 구현했습니다.</p>
+          <ul class="task-list">
+            <li><strong>PWA Web App Manifest (manifest.json):</strong> <code>display: standalone</code>, <code>orientation: portrait</code>, 고해상도 앱 아이콘(192x192, 512x512, maskable) 설정 및 테마 컬러(<code>#030712</code>) 정의</li>
+            <li><strong>오프라인 지원 서비스 워커 (sw.js):</strong> 앱 셸 핵심 정적 리소스(HTML, CSS, JS, 아이콘) 캐싱 및 네트워크 우선/캐시 폴백 하이브리드 전략 적용</li>
+            <li><strong>동적 로컬 네트워크(LAN) IP 자동 감지:</strong> Wi-Fi 네트워크 접속 주소(<code>http://192.168.14.221:3000</code>)를 자동 계산하여 스마트폰에서 바로 스캔할 수 있는 맞춤형 QR 코드 렌더링</li>
+            <li><strong>원클릭 설치 모달 (pwa-modal):</strong> 상단 네비게이션 및 사이드바에 <code>앱 설치 (QR)</code> 버튼을 배치하고 고해상도 QR 코드, 주소 복사, 사용자 정의 IP 변경 기능 제공</li>
+            <li><strong>OS별 상세 설치 가이드 탭:</strong> Android(Chrome 홈 화면에 추가 배너/메뉴 설치) 및 iOS Safari(공유 버튼 ⎋ -> [홈 화면에 추가]) 단계별 가이드 제공</li>
+            <li><strong>iOS 메타 태그 완벽 지원:</strong> <code>apple-mobile-web-app-capable</code>, <code>apple-touch-icon</code>(180x180), 상태표시줄 스타일 적용으로 iPhone에서도 완벽한 앱 경험 보장</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 11: Fix Auth Modal Disappearing on Login Failure -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">11. [버그 수정] 로그인 실패 시 인증 팝업 모달 비정상 닫힘 방지 및 오류 안내 UI 개선</span>
+          <span class="timeline-date">2026-10-12 14:44</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>비밀번호 불일치(<code>auth/invalid-credential</code> 등) 시 로그인 팝업 모달이 갑자기 사라지던 버그를 분석하고, 모달이 안정적으로 열린 채 오류 안내와 자동 포커스를 제공하도록 프론트엔드 이벤트 전파 및 닫기 로직을 전면 보강했습니다.</p>
+          <ul class="task-list">
+            <li><strong>모달 닫기(closeAuthModal) 엄격 격리:</strong> <code>try</code> 블록 후미에 있던 무조건 닫기 호출을 제거하고, Firebase 실제 인증 성공(<code>userCredential</code>) 분기 내에서만 안전하게 닫히도록 로직 수정</li>
+            <li><strong>배경 오버레이(Backdrop) 오작동 방지:</strong> 마우스 드래그나 오류 발생 시 레이아웃 높이 변화(Reflow)로 인해 클릭이 오버레이로 유실되어 모달이 닫히던 현상을 방지하기 위해 <code>mousedown</code>과 <code>click</code>이 모두 오버레이 본체에서 발생했을 때만 닫히도록 방어 코드 구축</li>
+            <li><strong>모달 내부 이벤트 전파 차단 (stopPropagation):</strong> <code>.modal-dialog</code> 카드 내부 클릭 및 마우스 이벤트가 오버레이로 버블링되지 않도록 원천 차단</li>
+            <li><strong>폼 전송 버튼 타입 안정화:</strong> <code>button[type="submit"]</code>을 <code>type="button"</code>으로 전환하고 엔터키 이벤트 및 <code>preventDefault()</code>를 명시 처리하여 예기치 않은 네이티브 폼 제출/새로고침 차단</li>
+            <li><strong>실패 피드백 시각화 (Shake 애니메이션):</strong> 인증 실패 시 팝업 창이 좌우로 흔들리는 부드러운 <code>modal-shake</code> 애니메이션 적용 및 <code>⚠️ 이메일 또는 비밀번호가 일치하지 않습니다.</code> 경고 배너 표시</li>
+            <li><strong>비밀번호 입력창 자동 포커스:</strong> 인증 실패 시 사용자가 비밀번호를 즉시 다시 입력할 수 있도록 비밀번호 필드에 포커스 및 텍스트 선택(select) 자동 적용</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 10: Guest Mode Chat Lock & Authentication Security -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">10. 비로그인(게스트) 상태 채팅 기능 비활성화 및 인증 잠금(Lock) 보안 UI 구축</span>
+          <span class="timeline-date">2026-10-12 14:24</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 요청에 따라 로그인하지 않은 상태에서는 Gemini 대화 기능이 활성화되지 않도록 프론트엔드 잠금 제어 및 직관적인 안내 인터페이스를 전면 구현했습니다.</p>
+          <ul class="task-list">
+            <li><strong>입력창 및 조작부 잠금 (disabled):</strong> 비로그인 상태 시 텍스트 입력창, 이미지 첨부, 음성 입력, 전송 버튼을 모두 비활성화하고 <code>🔒 대화를 시작하려면 로그인이 필요합니다</code> 안내문 표시</li>
+            <li><strong>API 전송 차단 검증:</strong> <code>sendMessage()</code> 실행 시 사용자 인증 여부(<code>currentUser</code>)를 검증하여 미인증 요청의 무단 전송 차단</li>
+            <li><strong>웰컴 뷰 로그인 안내 카드:</strong> 대화가 없는 초기 화면에 <code>대화를 시작하려면 로그인이 필요합니다</code> 배너와 원클릭 <code>로그인 / 회원가입</code> 버튼 배치</li>
+            <li><strong>하단 툴바 잠금 오버레이:</strong> 입력창 상단에 미인증 알림 배너를 노출하고 터치/클릭 시 로그인 모달이 자동 호출되도록 UX 개선</li>
+            <li><strong>인증 상태 실시간 동기화:</strong> 로그인 성공 시 즉시 잠금이 해제되어 정규 채팅창으로 복귀하고, 로그아웃 시 다시 잠금 모드로 자동 전환</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 9: Light Mode High-Contrast White Icons Fix -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">9. 라이트 모드 상단 및 입력 툴바 아이콘 고대비 화이트(#ffffff) 스타일 개선</span>
+          <span class="timeline-date">2026-10-12 14:19</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 피드백을 반영하여 라이트 모드 시 상단 네비게이션 바 및 입력 툴바의 아이콘 색상이 어두운 배경과 겹쳐 보이지 않던 문제를 해결하고, 선명한 순백색(<code>#ffffff</code>)으로 시인성을 대폭 강화했습니다.</p>
+          <ul class="task-list">
+            <li><strong>상단 네비게이션 아이콘 화이트화:</strong> 좌측 메뉴(햄버거), 대화 비우기(휴지통), 테마 전환(달), 환경설정(톱니바퀴), 사용자 프로필 아이콘에 <code>stroke: #ffffff; color: #ffffff;</code> 적용</li>
+            <li><strong>모델 칩 텍스트 가독성 개선:</strong> <code>gemini-3.8-flash</code> 모델 칩 텍스트 및 버튼 텍스트를 화이트로 지정하여 다크 글래스 위에서 뚜렷하게 식별되도록 개선</li>
+            <li><strong>하단 툴바 아이콘 동기화:</strong> 이미지 첨부 및 마이크 음성 입력 버튼도 화이트 색상으로 통일 적용</li>
+            <li><strong>호버 인터랙션 강화:</strong> 마우스 오버 시 부드러운 반투명 화이트 하이라이트(<code>rgba(255, 255, 255, 0.16)</code>) 배경 전환 추가</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 8: Dedicated chatbot_users Schema & Visual Browser Computer-Use Testing -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">8. 챗봇 전용 독립 스키마(chatbot_users) 전환 및 브라우저 시각적(Visual) Computer-Use 테스트 완료</span>
+          <span class="timeline-date">2026-10-12 14:11</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>이전 카페 앱(<code>users</code> 컬렉션)과의 데이터 충돌을 방지하기 위해 챗봇 전용 독립 스키마 <strong><code>chatbot_users</code></strong>를 정의하고, 사용자 데스크톱에 실제 브라우저 창을 띄워 마우스/키보드 동작을 실시간으로 시연하는 시각적 Computer-Use 테스트를 완료했습니다.</p>
+          <ul class="task-list">
+            <li><strong>챗봇 전용 독립 스키마 (chatbot_users):</strong> <code>app</code>, <code>role</code>, <code>preferences</code>(모델, 테마, 페르소나, 온도값), <code>stats</code>, <code>createdAt</code>, <code>lastLoginAt</code>이 포함된 풍부한 사용자 도메인 모델 설계</li>
+            <li><strong>대화 세션 격리 저장:</strong> <code>chatbot_users/{uid}/chats</code> 경로로 챗봇 대화 기록을 온전히 격리 관리하여 기존 앱 데이터와의 무결성 확보</li>
+            <li><strong>브라우저 화면 시각적(Visual) 테스트 실행:</strong> <code>headless=False</code> 모드로 Microsoft Edge를 사용자 화면에 직접 실행하여 마우스/키보드 제어 시각화</li>
+            <li><strong>네온 발광 마우스 커서 & 클릭 리플 애니메이션:</strong> 화면 상에서 마우스가 어디로 이동하고 어떤 요소를 클릭하는지 시각적 인디케이터 제공</li>
+            <li><strong>사람 눈높이 타이핑 & 조작 시연:</strong> 자연스러운 딜레이(<code>slow_mo=250</code>)로 회원가입 입력, Gemini 질문 전송, 스트리밍 응답 렌더링, 로그아웃 전 과정 100% 정상 통과</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 7: Cloud Firestore Integration & Computer-Use Automation Testing -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">7. Cloud Firestore 회원 정보 & 채팅 동기화 구현 및 myenv 가상환경 Computer-Use 테스트 완료</span>
+          <span class="timeline-date">2026-10-12 14:05</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>Firebase Authentication에 더해 <strong>Cloud Firestore(<code>iceu-songpa11</code>)</strong> 연동을 구축하고, <strong>가상환경 <code>myenv</code></strong>에서 마우스/키보드 Computer-Use 자동화 테스트를 성공적으로 수행했습니다.</p>
+          <ul class="task-list">
+            <li><strong>Cloud Firestore SDK 탑재:</strong> <code>index.html</code>에 공식 Firestore SDK (v10 compat) 로드 및 초기화</li>
+            <li><strong>회원 정보 자동 생성 (users 컬렉션):</strong> 회원가입 즉시 UID를 키로 하여 <code>users/{uid}</code> 문서에 이메일, 닉네임, 생성일시(<code>createdAt</code>), 최종로그인(<code>lastLoginAt</code>) 자동 저장</li>
+            <li><strong>로그인 시 활동 갱신:</strong> 로그인 성공 시 Firestore의 <code>lastLoginAt</code> 타임스탬프 자동 갱신</li>
+            <li><strong>대화 내역 클라우드 동기화 (chats 하위 컬렉션):</strong> 사용자가 Gemini와 나눈 채팅 세션 및 메시지 전체를 <code>users/{uid}/chats</code>에 자동 보관 및 로그인 시 복원</li>
+            <li><strong>가상환경 myenv Computer-Use 테스트 수행:</strong> <code>test_computer_use.py</code>를 통해 실제 브라우저 마우스 이동/클릭 및 키보드 입력을 시뮬레이션하여 10단계 시나리오(회원가입 -> Firestore users 검증 -> Gemini 대화 -> Firestore chats 검증 -> 로그아웃) 100% 통과</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 6: Firebase Cloud Credentials Registration & Live Auth Activation -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">6. Firebase Web API Key & App ID 등록 및 실시간 클라우드 인증 활성화</span>
+          <span class="timeline-date">2026-10-12 13:50</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자가 <code>.env</code> 파일에 GCP 프로젝트(<code>iceu-songpa11</code>)의 공식 Firebase Web API Key 및 Web App ID를 정상 등록하여, 실시간 클라우드 Firebase Authentication 연동을 완벽히 활성화했습니다.</p>
+          <ul class="task-list">
+            <li><strong>클라우드 인증 자격증명 등록:</strong> <code>FIREBASE_API_KEY</code> 및 <code>FIREBASE_APP_ID</code> 환경변수 연결 완료</li>
+            <li><strong>동적 .env 파싱 적용:</strong> <code>server.js</code>의 <code>GET /api/auth/config</code>에 동적 파일 파싱을 도입하여 무중단 환경변수 반영 지원</li>
+            <li><strong>실시간 클라우드 인증 활성화:</strong> Firebase Console에서 활성화된 이메일/비밀번호 로그인 공급자와 통신하여 실제 회원가입, 로그인, 로그아웃 작동</li>
+            <li><strong>상태 표시 및 UI 동기화:</strong> 상단 로그인 버튼, 아바타 뱃지, 모바일 인증 모달에 <code>iceu-songpa11</code> 정상 연동 상태 표시</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 5: Firebase Authentication -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">5. Firebase 계정 연동 및 회원가입, 로그인, 로그아웃 구현</span>
+          <span class="timeline-date">2026-10-12 13:40</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>GCP 프로젝트 <strong>iceu-songpa11</strong> (계정: <code>songpa11@iceu.kr</code>) 연동을 위한 Firebase Authentication 시스템을 전면 구축했습니다.</p>
+          <ul class="task-list">
+            <li><strong>Firebase SDK 탑재:</strong> 공식 Firebase App & Auth SDK (v10 compat) 및 <code>public/auth.js</code> 클라이언트 모듈 개발</li>
+            <li><strong>회원가입 (Sign-Up):</strong> 이메일, 비밀번호(6자 이상 검증), 닉네임 입력 및 유효성 검사, 한국어 에러 메시지 처리</li>
+            <li><strong>로그인 (Sign-In):</strong> 이메일/비밀번호 인증, 로그인 상태 실시간 감지(<code>onAuthStateChanged</code>)</li>
+            <li><strong>로그아웃 (Sign-Out):</strong> 1-클릭 로그아웃 및 상태 즉시 초기화</li>
+            <li><strong>UI/UX 연동:</strong> 상단 네비게이션 로그인 버튼/프로필 아바타 뱃지, 사이드바 하단 사용자 프로필 카드 연동</li>
+            <li><strong>모바일 인증 팝업:</strong> 로그인/회원가입 탭 전환 폼, 프로젝트 정보(<code>iceu-songpa11</code>) 안내 뱃지</li>
+            <li><strong>API 키 즉시 등록 엔드포인트:</strong> 서버 <code>GET /api/auth/config</code> 및 <code>POST /api/auth/setup</code> 구현으로 <code>.env</code>에 키 자동 반영</li>
+            <li><strong>CLI 인증 상태 진단:</strong> gcloud CLI 토큰 만료 상태 확인 및 사용자 안내 가이드 작성</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 4: Smartphone Viewport Conversion -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">4. 웹앱 비율을 스마트폰 비율(9:19.5)로 전면 개편</span>
+          <span class="timeline-date">2026-10-12 13:20</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 요청에 따라 데스크톱 전폭 레이아웃에서 <strong>최신 스마트폰(9:19.5) 비율</strong>로 화면 구조를 수정했습니다.</p>
+          <ul class="task-list">
+            <li><strong>스마트폰 중앙 프레임 배치:</strong> <code>max-width: 420px</code>, <code>max-height: 890px</code>, 라운드 모서리(<code>border-radius: 46px</code>) 및 앰비언트 글로우 테두리 적용</li>
+            <li><strong>상단 상태바 & 다이나믹 아일랜드:</strong> 실시간 시계 연동, 카메라 아일랜드, Wi-Fi 및 배터리 아이콘 시각 요소 추가</li>
+            <li><strong>하단 홈 제스처 바:</strong> 모바일 앱 느낌의 <code>phone-home-indicator</code> 배치</li>
+            <li><strong>모바일 최적화 레이아웃:</strong> 1열 터치형 추천 질문 카드, 슬림해진 입력 툴바 및 엄지 조작 터치 버튼</li>
+            <li><strong>사이드바 슬라이드 드로어:</strong> 대화 목록을 좌측에서 부드럽게 열고 닫을 수 있는 오버레이 서랍 형태로 전환</li>
+            <li><strong>네이티브 반응형 대응:</strong> 실제 모바일 기기(화면 폭 480px 이하) 접속 시 가상 프레임을 숨기고 100% 전체화면으로 자동 전환</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 3: Environment Variable Security -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">3. Gemini API Key 환경변수(GEMINI_API_KEY) 전용 연동</span>
+          <span class="timeline-date">2026-10-12 13:14</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>API 키 유출 방지 및 간편한 이용을 위해 클라이언트 입력 방식을 제거하고 환경변수 전용으로 전환했습니다.</p>
+          <ul class="task-list">
+            <li>백엔드(<code>server.js</code>)에서 <code>process.env.GEMINI_API_KEY</code>를 독점적으로 참조하도록 구조 개편</li>
+            <li>프로젝트 루트에 <code>.env</code> 파일 생성 및 시스템 환경 변수 키 자동 보존</li>
+            <li><code>.gitignore</code> 파일을 생성하여 <code>.env</code> 및 <code>node_modules</code>의 Git 커밋 방지</li>
+            <li>UI 설정 모달의 수동 키 입력창을 제거하고 <strong>'환경 변수 자동 연결됨'</strong> 뱃지 카드로 대체</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 2: UI/UX & Interactive Features -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">2. 고성능 대화형 웹 인터페이스 & 멀티모달 기능 구축</span>
+          <span class="timeline-date">2026-10-12 13:10</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>사용자 경험을 극대화하기 위한 풍부한 대화형 웹 기능을 구현했습니다.</p>
+          <ul class="task-list">
+            <li><strong>실시간 SSE 토큰 스트리밍:</strong> 타자기 효과 및 깜빡이는 커서, 응답 시간(Latency, ⚡ 0.8s) 뱃지 표시</li>
+            <li><strong>풍부한 마크다운 & 구문 강조:</strong> <code>Marked.js</code> 및 <code>Highlight.js</code> 연동, 코드 블록 언어 표시 및 1-클릭 클립보드 복사 기능</li>
+            <li><strong>멀티모달 이미지 분석:</strong> 파일 선택, 클립보드 이미지 붙여넣기(Ctrl+V), 드래그 앤 드롭 지원</li>
+            <li><strong>음성 AI (Speech):</strong> 답변을 소리 내어 읽어주는 TTS 및 한국어 실시간 음성 입력 STT 탑재</li>
+            <li><strong>세션 히스토리:</strong> 브라우저 <code>localStorage</code> 기반 대화 목록 보관, 자동 제목 지정, 삭제 지원</li>
+            <li><strong>환경 설정:</strong> 시스템 페르소나 선택(시니어 개발자, 번역가 등) 및 Temperature(0.0~2.0) 조절 모달</li>
+            <li><strong>다크/라이트 모드:</strong> 상단 원클릭 테마 전환 토글 지원</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Item 1: Project Setup & Server -->
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <span class="timeline-title">1. Node.js 백엔드 서버 및 Gemini 3.8 Flash 연동</span>
+          <span class="timeline-date">2026-10-12 13:07</span>
+          <span class="badge-done">완료</span>
+        </div>
+        <div class="timeline-card">
+          <p>Google 공식 최신 SDK(<code>@google/genai</code>)를 기반으로 백엔드 아키텍처를 구축했습니다.</p>
+          <ul class="task-list">
+            <li>Node.js + Express 5 기반 서버 아키텍처 수립 (포트: 3000)</li>
+            <li>2026년 9월 출시된 최신 고지능 모델 <strong>Gemini 3.8 Flash</strong>(1,048,576 토큰 컨텍스트) 채택</li>
+            <li>대용량 멀티모달 이미지 처리를 위한 JSON Payload 한도(25MB) 확장</li>
+            <li>Server-Sent Events(SSE) 스트리밍 엔드포인트(<code>POST /api/chat</code>) 및 상태 확인(<code>GET /api/status</code>) 구축</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Project File Structure -->
+    <h2 class="section-title">📁 프로젝트 구성 파일</h2>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>파일명</th>
+            <th>구분</th>
+            <th>역할 및 상세 설명</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>server.js</code></td>
+            <td>Backend</td>
+            <td>Express 백엔드 서버, SSE 스트리밍 라우터, Gemini 3.8 Flash SDK 연동</td>
+          </tr>
+          <tr>
+            <td><code>public/index.html</code></td>
+            <td>Frontend</td>
+            <td>스마트폰 프레임, 상태바, 대화창 및 모달 구조 (HTML5 시맨틱 마크업)</td>
+          </tr>
+          <tr>
+            <td><code>public/styles.css</code></td>
+            <td>Styling</td>
+            <td>9:19.5 스마트폰 비율, 글래스모피즘, 앰비언트 다크/라이트 테마 (Vanilla CSS)</td>
+          </tr>
+          <tr>
+            <td><code>public/app.js</code></td>
+            <td>Client Logic</td>
+            <td>실시간 스트리밍 소비, 마크다운 렌더링, 이미지 업로드, TTS/STT, 세션 관리</td>
+          </tr>
+          <tr>
+            <td><code>public/auth.js</code></td>
+            <td>Client Auth</td>
+            <td>Firebase SDK 연동, 실시간 인증 상태 동기화, 회원가입/로그인/로그아웃 모달 제어</td>
+          </tr>
+          <tr>
+            <td><code>.env</code></td>
+            <td>Config</td>
+            <td><code>GEMINI_API_KEY</code>, <code>FIREBASE_API_KEY</code>, <code>FIREBASE_APP_ID</code> 등 보안 환경변수</td>
+          </tr>
+          <tr>
+            <td><code>.gitignore</code></td>
+            <td>Git</td>
+            <td>API 키 및 대용량 종속성 파일(node_modules) 커밋 방지 설정</td>
+          </tr>
+          <tr>
+            <td><code>package.json</code></td>
+            <td>Config</td>
+            <td><code>@google/genai</code>, <code>express</code>, <code>dotenv</code> 등 종속성 관리</td>
+          </tr>
+          <tr>
+            <td><code>test_computer_use.py</code></td>
+            <td>Test Automation</td>
+            <td>가상환경(myenv) 기반 마우스/키보드 Computer-Use 시뮬레이션 및 E2E 테스트 스크립트</td>
+          </tr>
+          <tr>
+            <td><code>work_log.html</code></td>
+            <td>Documentation</td>
+            <td>지금까지의 개발 내역 및 향후 작업 업데이트용 공식 히스토리 문서</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Future Work Placeholder -->
+    <h2 class="section-title">🔮 향후 작업 및 업데이트 예정</h2>
+    <div class="future-placeholder">
+      <p>💡 새로운 작업 요청이 있을 때마다 상단 타임라인의 가장 위에 새로운 항목으로 기록 및 업데이트됩니다.</p>
+    </div>
+
+    <footer>
+      Gemini 3.8 Flash Studio • Project History Log • Created & Maintained Automatically
+    </footer>
+
+  </div>
+</body>
+</html>

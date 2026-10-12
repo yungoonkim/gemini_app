@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>안드로이드 스튜디오 완전 정복 가이드 • Gemini Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #07090e;
+      --bg-card: rgba(19, 27, 46, 0.75);
+      --bg-surface: #0f172a;
+      --accent-cyan: #38bdf8;
+      --accent-indigo: #6366f1;
+      --accent-purple: #a855f7;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(56, 189, 248, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 45%);
+      color: var(--text-main);
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      line-height: 1.65;
+      padding: 40px 20px 80px 20px;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 50px 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-indigo), var(--accent-purple));
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 720px;
+      margin: 0 auto 24px auto;
+    }
+
+    .starter-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      border-radius: 14px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fcd34d;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-align: left;
+    }
+
+    /* Path Highlight Box */
+    .path-box {
+      margin-top: 24px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+    }
+
+    .path-label {
+      color: var(--accent-cyan);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .path-text {
+      color: #e2e8f0;
+      word-break: break-all;
+    }
+
+    .copy-btn {
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--accent-indigo);
+      border: none;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: #4f46e5;
+      transform: translateY(-1px);
+    }
+
+    /* Quick Roadmap Cards */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-bottom: 40px;
+    }
+
+    .roadmap-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 18px 16px;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .roadmap-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-3px);
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-cyan);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .step-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* Step Card Sections */
+    .step-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-cyan);
+      margin-bottom: 10px;
+    }
+
+    .step-title {
+      font-size: 1.45rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .step-body p {
+      color: #cbd5e1;
+      margin-bottom: 14px;
+      font-size: 0.96rem;
+    }
+
+    /* Visual Simulated Studio UI */
+    .ui-sim-frame {
+      background: #1e1f22;
+      border: 1px solid #3c3f41;
+      border-radius: 12px;
+      margin: 18px 0;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .ui-sim-bar {
+      background: #2b2d30;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid #3c3f41;
+      font-size: 0.8rem;
+      color: #a8adbd;
+    }
+
+    .ui-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green { background: #10b981; }
+
+    .ui-sim-content {
+      padding: 20px;
+    }
+
+    /* Callouts & Tips */
+    .callout {
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin: 16px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 0.92rem;
+    }
+
+    .callout-info {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #bae6fd;
+    }
+
+    .callout-warning {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #fde68a;
+    }
+
+    .callout-success {
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #a7f3d0;
+    }
+
+    .callout-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Checklist */
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.93rem;
+      color: #cbd5e1;
+    }
+
+    .check-list li::before {
+      content: '✔';
+      color: var(--accent-emerald);
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-top: 2px;
+    }
+
+    /* Highlight Key Tag */
+    .key-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .code-chip {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--accent-cyan);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+
+    /* FAQ Collapsible */
+    details {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: all 0.2s ease;
+    }
+
+    details[open] {
+      border-color: var(--accent-indigo);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    summary {
+      padding: 16px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+      color: #fff;
+    }
+
+    summary::after {
+      content: '▼';
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    details[open] summary::after {
+      transform: rotate(180deg);
+      color: var(--accent-cyan);
+    }
+
+    .faq-answer {
+      padding: 0 20px 18px 20px;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 12px;
+    }
+
+    /* Buttons Row */
+    .button-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-indigo));
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 4px 18px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <header class="hero">
+      <div class="hero-badge">📱 Android Studio 2026.2.1 • 왕초보 친절 가이드</div>
+      <h1>Gemini Studio 안드로이드 앱<br>빌드 & 실행 완벽 가이드</h1>
+      <p>
+        "안드로이드 스튜디오를 처음 켜보더라도 클릭 몇 번만으로 100% 실행할 수 있도록" 사진과 함께 가장 쉬운 방법으로 설명합니다.
+      </p>
+
+      <div class="starter-banner">
+        <span>💡</span>
+        <span><strong>안드로이드 스튜디오를 전혀 몰라도 괜찮습니다!</strong> 아래 순서대로 1단계부터 따라 하시면 5분 안에 스마트폰에서 앱이 켜집니다.</span>
+      </div>
+
+      <!-- Quick Path Copy Box -->
+      <div class="path-box">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="path-label">📂 프로젝트 폴더 위치:</span>
+          <span class="path-text" id="project-path">c:\Users\USER\AI-NativeAgent\Project\gemini_app\androidApp</span>
+        </div>
+        <button class="copy-btn" onclick="copyPath()">경로 복사</button>
+      </div>
+    </header>
+
+    <!-- 5-Step Roadmap -->
+    <div class="roadmap-grid">
+      <div class="roadmap-card">
+        <div class="step-num">1</div>
+        <div class="step-name">프로젝트 열기</div>
+        <div class="step-desc">Open 버튼으로 폴더 선택</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="step-num">2</div>
+        <div class="step-name">Gradle 동기화</div>
+        <div class="step-desc">첫 로딩 자동 완료 대기</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="step-num">3</div>
+        <div class="step-name">기기 선택</div>
+        <div class="step-desc">가상폰 또는 실제 스마트폰</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="step-num">4</div>
+        <div class="step-name">초록색 ▶ 실행</div>
+        <div class="step-desc">Run 클릭하면 앱 설치 완료</div>
+      </div>
+      <div class="roadmap-card">
+        <div class="step-num">5</div>
+        <div class="step-name">AI 챗봇 테스트</div>
+        <div class="step-desc">검색, 음성, 이미지 대화</div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <section class="step-section">
+      <div class="step-badge">STEP 01</div>
+      <h2 class="step-title">1단계: 안드로이드 스튜디오에서 프로젝트 열기 (Open)</h2>
+      <div class="step-body">
+        <p>안드로이드 스튜디오를 실행한 후, 새 프로젝트를 만들지 마시고 <strong>Open</strong>을 눌러 생성해둔 <code>androidApp</code> 폴더를 선택해야 합니다.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div>
+            <strong>주의:</strong> 절대 <strong>New Project</strong>를 누르지 마세요! 이미 모든 코드가 준비되어 있으므로 <strong>Open</strong>을 눌러야 합니다.
+          </div>
+        </div>
+
+        <div class="ui-sim-frame">
+          <div class="ui-sim-bar">
+            <span class="ui-dot dot-red"></span>
+            <span class="ui-dot dot-yellow"></span>
+            <span class="ui-dot dot-green"></span>
+            <span>Android Studio 2026.2.1 • Welcome Window</span>
+          </div>
+          <div class="ui-sim-content" style="background: #1e1f22; text-align: center; padding: 30px;">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">🤖</div>
+            <div style="font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 20px;">Welcome to Android Studio</div>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+              <div style="padding: 10px 22px; background: #35373c; border-radius: 8px; color: #8c909b; font-size: 0.9rem;">+ New Project</div>
+              <div style="padding: 10px 24px; background: var(--accent-indigo); border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.9rem; box-shadow: 0 0 16px rgba(99,102,241,0.5);">📂 Open (← 여기를 클릭!)</div>
+            </div>
+          </div>
+        </div>
+
+        <ul class="check-list">
+          <li><strong>Open</strong> 창이 뜨면 상단 경로 입력창에 위에서 복사한 <code class="code-chip">c:\Users\USER\AI-NativeAgent\Project\gemini_app\androidApp</code> 폴더를 붙여넣고 <strong>OK</strong>를 누릅니다.</li>
+          <li>"Trust Project?" 팝업창이 뜨면 <strong style="color: var(--accent-cyan);">Trust Project</strong>를 클릭합니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STEP 2 -->
+    <section class="step-section">
+      <div class="step-badge">STEP 02</div>
+      <h2 class="step-title">2단계: 첫 번째 Gradle Sync 자동 다운로드 기다리기</h2>
+      <div class="step-body">
+        <p>프로젝트를 처음 열면 안드로이드 스튜디오가 필요한 라이브러리(Gradle 8.9 및 Android SDK)를 인터넷에서 자동으로 다운로드하고 빌드를 준비합니다.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">☕</div>
+          <div>
+            <strong>안심하세요:</strong> 첫 실행 시에는 컴퓨터 사양 및 인터넷 속도에 따라 <strong>1분 ~ 3분</strong> 정도 소요될 수 있습니다. 멈춘 것이 아니니 우측 하단의 게이지가 끝날 때까지 잠시 커피 한 잔 하며 기다려주세요!
+          </div>
+        </div>
+
+        <div class="ui-sim-frame">
+          <div class="ui-sim-bar">
+            <span>Android Studio 우측 하단 상태 표시줄 (Status Bar)</span>
+          </div>
+          <div class="ui-sim-content" style="background: #2b2d30; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 0.88rem;">
+              <span style="color: var(--accent-cyan); animation: spin 1s infinite linear;">🔄</span>
+              <span style="color: #cbd5e1;">Gradle: Building model and syncing dependencies...</span>
+            </div>
+            <span style="color: var(--accent-emerald); font-weight: 700; font-size: 0.82rem;">BUILD SUCCESSFUL</span>
+          </div>
+        </div>
+
+        <ul class="check-list">
+          <li>우측 하단의 회전하는 프로그레스 바가 사라지고 좌측에 <code>app</code> 폴더와 파일 목록이 보이면 준비가 완료된 것입니다.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- STEP 3 -->
+    <section class="step-section">
+      <div class="step-badge">STEP 03</div>
+      <h2 class="step-title">3단계: 테스트할 기기 준비하기 (가상폰 vs 실제 스마트폰)</h2>
+      <div class="step-body">
+        <p>앱을 띄울 기기를 선택합니다. 컴퓨터 화면에 스마트폰을 띄우는 <strong>가상폰(에뮬레이터)</strong> 방식과 내 손에 있는 <strong>진짜 스마트폰</strong>을 연결하는 방식 중 편한 것을 선택하세요.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0;">
+          <!-- Option A -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px;">
+            <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px;">방법 A: 가상 스마트폰 (추천 👍)</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">선 연결 없이 모니터 안에서 안드로이드 폰이 켜집니다.</p>
+            <ol style="font-size: 0.85rem; color: #cbd5e1; padding-left: 18px; line-height: 1.6;">
+              <li>우측 사이드바의 <strong>Device Manager</strong> 아이콘 클릭</li>
+              <li><strong>+ (Create Virtual Device)</strong> 클릭</li>
+              <li>Phone 목록에서 <strong>Pixel 8</strong> 선택 후 Next</li>
+              <li>시스템 이미지(VanillaIceCream/UpsideDownCake) 다운로드 후 Finish</li>
+              <li>재생(▶) 버튼을 누르면 화면에 가상 폰이 켜집니다!</li>
+            </ol>
+          </div>
+
+          <!-- Option B -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 18px;">
+            <div style="font-size: 1.1rem; font-weight: 700; color: var(--accent-emerald); margin-bottom: 8px;">방법 B: 실제 안드로이드 폰 (갤럭시 등)</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">진짜 내 스마트폰에 앱을 깔아서 테스트합니다.</p>
+            <ol style="font-size: 0.85rem; color: #cbd5e1; padding-left: 18px; line-height: 1.6;">
+              <li>폰 설정 → <strong>휴대전화 정보</strong> → <strong>소프트웨어 정보</strong> 진입</li>
+              <li><strong>'빌드번호'</strong> 항목을 빠르게 <strong>7번 연속 터치</strong>! (개발자 모드 활성화)</li>
+              <li>설정 맨 아래에 생긴 <strong>개발자 옵션</strong> → <strong>USB 디버깅</strong> 켜기</li>
+              <li>USB 케이블로 PC와 폰 연결 → 폰 화면에 뜨는 <strong>"USB 디버깅 항상 허용"</strong> 확인</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 4 -->
+    <section class="step-section">
+      <div class="step-badge">STEP 04</div>
+      <h2 class="step-title">4단계: 초록색 재생 버튼 ▶ (Run App) 누르기!</h2>
+      <div class="step-body">
+        <p>이제 모든 준비가 끝났습니다! 상단 툴바에서 초록색 삼각형 재생 버튼을 누르기만 하면 안드로이드 스튜디오가 앱을 컴파일하고 스마트폰에 자동으로 설치 및 실행합니다.</p>
+
+        <div class="ui-sim-frame">
+          <div class="ui-sim-bar">
+            <span>Android Studio 상단 메인 툴바 (Main Toolbar)</span>
+          </div>
+          <div class="ui-sim-content" style="background: #2b2d30; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <span style="background: #1e1f22; padding: 6px 14px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; color: #fff;">📁 app</span>
+              <span style="background: #1e1f22; padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; color: var(--accent-cyan);">📱 Pixel 8 (API 35)</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div style="padding: 8px 18px; background: #16a34a; border-radius: 8px; color: #fff; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 0 16px rgba(22, 163, 74, 0.6); cursor: pointer;">
+                <span>▶</span>
+                <span>Run 'app' (단축키: Shift + F10)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <div class="callout-icon">🎉</div>
+          <div>
+            <strong>성공:</strong> 잠시 후 가상 스마트폰 또는 실제 스마트폰 화면에 **Gemini Studio** 다크 모드 챗봇 화면이 화려하게 켜집니다!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5 -->
+    <section class="step-section">
+      <div class="step-badge">STEP 05</div>
+      <h2 class="step-title">5단계: 앱에서 Gemini 3.8 Flash 핵심 기능 테스트하기</h2>
+      <div class="step-body">
+        <p>안드로이드 앱이 켜지면 아래 핵심 기능들을 직접 체험해볼 수 있습니다.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 16px;">
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px;">
+            <div style="font-weight: 700; color: var(--accent-cyan); margin-bottom: 6px;">🌐 1. 실시간 구글 웹 검색 (Grounding)</div>
+            <p style="font-size: 0.84rem; color: var(--text-muted);">
+              "오늘 서울 송파구 문정동 날씨 어때?"라고 물어보세요. 하단에 실시간 검색어 칩과 기상청 웹사이트 출처 링크가 생성됩니다.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px;">
+            <div style="font-weight: 700; color: var(--accent-purple); margin-bottom: 6px;">🖼️ 2. 멀티모달 이미지 분석</div>
+            <p style="font-size: 0.84rem; color: var(--text-muted);">
+              입력창 좌측 갤러리 아이콘을 누르면 안드로이드 갤러리나 카메라가 열려 사진을 첨부하고 AI에게 분석을 요청할 수 있습니다.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px;">
+            <div style="font-weight: 700; color: var(--accent-emerald); margin-bottom: 6px;">🎤 3. 한국어 음성 인식 (STT)</div>
+            <p style="font-size: 0.84rem; color: var(--text-muted);">
+              마이크 버튼을 누르면 마이크 권한 요청이 뜨고, 음성으로 말하면 글자로 자동 변환되어 질문을 작성합니다.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 16px;">
+            <div style="font-weight: 700; color: #f59e0b; margin-bottom: 6px;">☁️ 4. 클라우드 자동 동기화</div>
+            <p style="font-size: 0.84rem; color: var(--text-muted);">
+              Google Cloud Run 프로덕션 서버와 Firebase Firestore로 대화 기록이 실시간으로 안전하게 동기화됩니다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BONUS: APK Export -->
+    <section class="step-section" style="border-color: rgba(99, 102, 241, 0.4);">
+      <div class="step-badge" style="color: var(--accent-indigo);">BONUS GUIDE</div>
+      <h2 class="step-title">🎁 보너스: 친구나 내 폰에 설치할 수 있는 APK 파일 만들기</h2>
+      <div class="step-body">
+        <p>안드로이드 스튜디오를 켜지 않고도 카카오톡이나 구글 드라이브로 파일을 전송해 폰에 바로 설치할 수 있는 <code>.apk</code> 파일을 만드는 방법입니다.</p>
+
+        <ol style="padding-left: 20px; line-height: 1.8; color: #cbd5e1; font-size: 0.92rem;">
+          <li>상단 메뉴바에서 <strong>Build</strong> 클릭</li>
+          <li><strong>Build Bundle(s) / APK(s)</strong> 마우스 오버 → <strong>Build APK(s)</strong> 클릭</li>
+          <li>10~20초 후 우측 하단에 <strong style="color: var(--accent-emerald);">"APK(s) generated successfully"</strong> 알림창이 뜹니다.</li>
+          <li>알림창의 파란색 글씨인 <strong>locate</strong>를 클릭하면 탐색기가 열리며 <code>app-debug.apk</code> 파일이 나타납니다.</li>
+          <li>이 파일을 카카오톡 '나와의 채팅'으로 보내서 스마트폰에서 다운로드 후 설치하시면 끝납니다!</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="step-section">
+      <div class="step-badge">FAQ & TROUBLESHOOTING</div>
+      <h2 class="step-title">❓ 자주 묻는 질문 & 문제 해결</h2>
+      
+      <details open>
+        <summary>Q1. "Android SDK가 설치되어 있지 않다"고 에러가 떠요!</summary>
+        <div class="faq-answer">
+          안드로이드 스튜디오를 방금 처음 설치하셨다면 발생하는 정상적인 안내입니다. 팝업창에서 <strong>Install missing SDK</strong> 링크나 버튼을 클릭하시면 안드로이드 스튜디오가 알아서 최신 SDK 35를 1분 안에 다운로드해줍니다.
+        </div>
+      </details>
+
+      <details>
+        <summary>Q2. 로컬 컴퓨터(webApp 폴더)의 Node.js 서버와 연동해서 테스트하고 싶어요!</summary>
+        <div class="faq-answer">
+          기본적으로는 Google Cloud Run 클라우드 서버에 접속되도록 설정되어 있습니다. 컴퓨터에서 <code>webApp</code> 폴더의 <code>node server.js</code>를 켜놓고 안드로이드 에뮬레이터에서 로컬 서버로 붙이고 싶다면, 안드로이드 가상폰 브라우저 주소인 <code class="code-chip">http://10.0.2.2:3000</code>을 사용하시면 됩니다 (10.0.2.2는 안드로이드 에뮬레이터가 내 컴퓨터의 localhost를 가리키는 특별한 IP입니다).
+        </div>
+      </details>
+
+      <details>
+        <summary>Q3. 실제 스마트폰을 컴퓨터에 꽂았는데 기기 목록에 안 떠요!</summary>
+        <div class="faq-answer">
+          1) 스마트폰의 <strong>USB 디버깅</strong>이 켜져 있는지 확인해주세요.<br>
+          2) 단순 충전 전용 케이블이 아닌 <strong>데이터 전송이 가능한 정품 USB 케이블</strong>을 사용해주세요.<br>
+          3) 폰 화면을 켰을 때 "이 컴퓨터에서 항상 디버깅을 허용하시겠습니까?"라는 팝업이 뜨면 <strong>허용</strong>을 눌러주셔야 기기가 인식됩니다.
+        </div>
+      </details>
+    </section>
+
+    <!-- Quick Navigation Links -->
+    <div style="text-align: center; margin-top: 30px;">
+      <div class="button-row" style="justify-content: center;">
+        <a href="https://gemini-studio-976675812314.asia-northeast3.run.app" target="_blank" class="action-btn btn-primary">
+          <span>🌐</span>
+          <span>라이브 Cloud Run 웹앱 열기</span>
+        </a>
+        <a href="work_log.html" target="_blank" class="action-btn btn-secondary">
+          <span>📋</span>
+          <span>프로젝트 전체 개발 내역서 보기</span>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <p>© 2026 Gemini 3.8 Flash Studio • Project <code>iceu-songpa11</code> (songpa11@iceu.kr)</p>
+      <p style="margin-top: 6px; font-size: 0.78rem;">Designed for Android Studio 2026.2.1 • Ladybug & Meerkat Ready</p>
+    </footer>
+
+  </div>
+
+  <script>
+    function copyPath() {
+      const text = document.getElementById('project-path').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.textContent = '복사 완료!';
+        btn.style.background = '#10b981';
+        setTimeout(() => {
+          btn.textContent = '경로 복사';
+          btn.style.background = 'var(--accent-indigo)';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

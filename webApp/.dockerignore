@@ -1,0 +1,14 @@
+.env
+.env.*
+node_modules
+npm-debug.log
+test_screenshots
+test_modal_fix.py
+test_computer_use.py
+test_web_search.py
+*.pyc
+__pycache__
+.git
+.gitignore
+.DS_Store
+

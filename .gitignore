@@ -1,0 +1,52 @@
+# ==========================================
+# Root .gitignore for Gemini 3.8 Flash Studio
+# Prevents accidental secret leakage & build clutter
+# ==========================================
+
+# 1. Environment & Secret Credentials (CRITICAL!)
+.env
+.env.*
+!.env.example
+webApp/.env
+webApp/.env.*
+!webApp/.env.example
+
+# 2. Node.js & Dependencies
+node_modules/
+webApp/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# 3. Android Studio & Gradle
+androidApp/.gradle/
+androidApp/build/
+androidApp/*/build/
+androidApp/local.properties
+androidApp/.idea/
+androidApp/*.iml
+androidApp/*/*.iml
+androidApp/.cxx/
+androidApp/.externalNativeBuild/
+androidApp/captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.keystore
+*.jks
+
+# 4. OS & Editor Specific
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+
+# 5. Logs & Temporary Test Files
+*.log
+logs/
+test_screenshots/
+webApp/test_screenshots/
